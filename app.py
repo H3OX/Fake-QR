@@ -8,7 +8,7 @@ revision = os.environ.get('K_REVISION', 'Unknown revision')
 
 @app.route('/', methods=['GET'])
 def root():
-    return render_template('index.html',
+    return render_template('index2.html',
     Service=service,
     Revision=revision)
 
