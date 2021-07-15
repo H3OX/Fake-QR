@@ -1,13 +1,17 @@
-# Use Python37
-FROM python:3.7
-# Copy requirements.txt to the docker image and install packages
-COPY requirements.txt /
-RUN pip install -r requirements.txt
-# Set the WORKDIR to be the folder
-COPY . /app
-# Expose port 5000
-EXPOSE 5000
-ENV PORT 5000
+# Python image to use.
+FROM python:3.8
+
+# Set the working directory to /app
 WORKDIR /app
-# Use gunicorn as the entrypoint
-CMD exec gunicorn --bind :$PORT wsgi:app --workers 1 --threads 1 --timeout 60
+
+# copy the requirements file used for dependencies
+COPY requirements.txt .
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
+
+# Copy the rest of the working directory contents into the container at /app
+COPY . .
+
+# Run app.py when the container launches
+ENTRYPOINT ["python", "app.py"]
